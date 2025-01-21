@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills and Languages Animation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+    }
+    .container {
+      position: relative;
+      text-align: center;
+    }
+    .word {
+      font-size: 24px;
+      margin: 10px 0;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+    .word.active {
+      color: #00ffea;
+      text-shadow: 0 0 12px #00ffea;
+    }
+    .scanning-bar {
+      position: absolute;
+      border: 2px solid #00ffea;
+      border-radius: 8px;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px #00ffea;
+    }
+    .scanning-bar::before, .scanning-bar::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #00ffea;
+      box-shadow: 0 0 10px #00ffea;
+    }
+    .scanning-bar::before {
+      top: -4px;
+      left: -4px;
+    }
+    .scanning-bar::after {
+      bottom: -4px;
+      right: -4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="scanning-bar"></div>
+    <div class="word">Frontend Development</div>
+    <div class="word">HTML, CSS, JavaScript, React</div>
+  </div>
+  <script>
+    const skills = [
+      "Frontend Development",
+      "Backend Development",
+      "UI/UX Design",
+      "Full Stack Development"
+    ];
+
+    const languagePairs = {
+      "Frontend Development": "HTML, CSS, JavaScript, React",
+      "Backend Development": "Node.js, Express, API",
+      "UI/UX Design": "Sketch, Figma, Adobe XD",
+      "Full Stack Development": "GraphQL, TypeScript, SQL"
+    };
+
+    const words = document.querySelectorAll('.word');
+    const scanningBar = document.querySelector('.scanning-bar');
+
+    let currentIndex = 0;
+
+    function updateWords(index) {
+      const skill = skills[index];
+      const languages = languagePairs[skill];
+
+      words[0].textContent = skill;
+      words[1].textContent = languages;
+
+      const skillWidth = words[0].offsetWidth;
+      const languageWidth = words[1].offsetWidth;
+      const maxWidth = Math.max(skillWidth, languageWidth);
+
+      scanningBar.style.width = `${maxWidth + 20}px`;
+      scanningBar.style.top = `${words[0].offsetTop - 10}px`;
+      scanningBar.style.left = `${words[0].offsetLeft - 10}px`;
+
+      words.forEach(word => word.classList.remove('active'));
+      words[0].classList.add('active');
+
+      setTimeout(() => {
+        words[1].classList.add('active');
+      }, 1500);
+    }
+
+    function startAnimation() {
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % skills.length;
+        updateWords(currentIndex);
+      }, 3000);
+    }
+
+    updateWords(currentIndex);
+    startAnimation();
+  </script>
+</body>
+</html>
